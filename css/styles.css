@@ -4,8 +4,8 @@
    ============================================ */
 
 :root {
-  --plum: #5C2D6B;
-  --plum-dark: #431f4d;
+  --plum: #400E2F;
+  --plum-dark: #2a091f;
   --gold: #D4A843;
   --sage: #7A9E7E;
   --cream: #F7F3EE;
@@ -127,7 +127,7 @@ p { margin: 0 0 16px; }
   z-index: 100;
   background: rgba(247, 243, 238, 0.92);
   backdrop-filter: blur(6px);
-  border-bottom: 1px solid rgba(92, 45, 107, 0.1);
+  border-bottom: 1px solid rgba(64, 14, 47, 0.1);
 }
 
 .nav {
@@ -240,7 +240,7 @@ p { margin: 0 0 16px; }
   max-width: 420px;
   margin: 0 0 40px 40px;
   padding: 24px 28px;
-  background: rgba(44,44,44,0.55);
+  background: rgba(64,14,47,0.65);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   border-radius: var(--radius);
@@ -373,7 +373,7 @@ section { padding: 88px 0; }
   border-radius: 999px;
   margin-bottom: 14px;
 }
-.tag-plum { background: rgba(92,45,107,0.1); color: var(--plum); }
+.tag-plum { background: rgba(64,14,47,0.1); color: var(--plum); }
 .tag-gold { background: rgba(212,168,67,0.18); color: #8a6b1f; }
 .tag-sage { background: rgba(122,158,126,0.18); color: #3f5a42; }
 
@@ -605,7 +605,7 @@ section { padding: 88px 0; }
     flex-direction: column;
     padding: 20px 24px;
     gap: 18px;
-    border-bottom: 1px solid rgba(92,45,107,0.1);
+    border-bottom: 1px solid rgba(64,14,47,0.1);
   }
   .grid-3, .grid-2, .grid-4 { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
