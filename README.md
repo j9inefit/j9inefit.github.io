@@ -24,9 +24,16 @@ CNAME                 Custom domain for GitHub Pages (www.j9ine.com)
 1. **Contact form** — `contact.html` posts to Formspree. Create a free form at
    [formspree.io](https://formspree.io), then replace `YOUR_FORM_ID` in the
    `<form action="...">` attribute with your real endpoint.
-2. **Photos** — swap the gradient `.img-placeholder` blocks in `index.html` and
+2. **Newsletter signup** — every page's footer has a `.newsletter-bar` email
+   form posting to Formspree too (search for `YOUR_NEWSLETTER_FORM_ID`).
+   Create a **second, separate** Formspree form for this so subscriber emails
+   don't land in the same inbox view as contact inquiries. If you later move
+   to a real newsletter tool (Mailchimp, ConvertKit, Beehiiv, etc.), swap the
+   `<form>` action/fields for that provider's embed code — the markup is the
+   same block on every page (search for `newsletter-bar`).
+3. **Photos** — swap the gradient `.img-placeholder` blocks in `index.html` and
    `about.html` for real photos once available.
-3. **Instagram handle** — currently linked as `@J9INEFit`; update everywhere
+4. **Instagram handle** — currently linked as `@J9INEFit`; update everywhere
    (search for `instagram.com/J9INEFit`) if that changes.
 
 ## Local preview
