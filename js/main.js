@@ -11,4 +11,15 @@ document.addEventListener('DOMContentLoaded', function () {
   if (year) {
     year.textContent = new Date().getFullYear();
   }
+
+  var heroVideo = document.querySelector('.hero-bg-video');
+  if (heroVideo) {
+    if (heroVideo.readyState >= 2) {
+      heroVideo.classList.add('is-loaded');
+    } else {
+      heroVideo.addEventListener('loadeddata', function () {
+        heroVideo.classList.add('is-loaded');
+      });
+    }
+  }
 });
