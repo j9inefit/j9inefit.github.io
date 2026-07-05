@@ -216,6 +216,51 @@ p { margin: 0 0 16px; }
 .hero h1 { color: var(--white); }
 .hero .lede { color: rgba(255,255,255,0.85); }
 
+.hero-video-hero {
+  padding: 0;
+  min-height: 640px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+.hero-video-hero::after {
+  display: none;
+}
+.hero-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.hero-corner {
+  position: relative;
+  z-index: 2;
+  max-width: 420px;
+  margin: 0 0 40px 40px;
+  padding: 24px 28px;
+  background: rgba(44,44,44,0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: var(--radius);
+}
+.hero-corner h1 {
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+  margin-bottom: 12px;
+}
+.hero-corner .lede {
+  font-size: 0.9rem;
+  margin-bottom: 18px;
+}
+.hero-corner .cta-row {
+  gap: 10px;
+}
+.hero-corner .btn {
+  padding: 10px 20px;
+  font-size: 0.82rem;
+}
+
 .about-photo {
   justify-self: center;
   max-height: 480px;
@@ -392,7 +437,7 @@ section { padding: 88px 0; }
 
 /* ---------- CTA banner ---------- */
 .cta-banner {
-  background: linear-gradient(135deg, var(--sage), #5f8163);
+  background: linear-gradient(135deg, #355E3B, #24402a);
   color: var(--white);
   border-radius: var(--radius);
   padding: 56px;
@@ -518,6 +563,8 @@ section { padding: 88px 0; }
   .grid-3 { grid-template-columns: 1fr 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .about-photo { max-height: 320px; }
+  .hero-video-hero { min-height: 480px; }
+  .hero-corner { margin: 0 20px 24px; max-width: none; }
 }
 
 @media (max-width: 680px) {
