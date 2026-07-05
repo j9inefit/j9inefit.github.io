@@ -47,7 +47,7 @@ npx serve .
 
 ## Deploying (GitHub Pages)
 
-1. Push this repo to `github.com/j9inefit/j9ine.com`.
+1. Push this repo to `github.com/j9inefit/j9inefit.github.io`.
 2. In the repo, go to **Settings → Pages**.
    - Source: `Deploy from a branch`
    - Branch: `main` / `(root)`
