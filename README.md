@@ -19,22 +19,17 @@ sitemap.xml, robots.txt   SEO
 CNAME                 Custom domain for GitHub Pages (www.j9ine.com)
 ```
 
-## Before going live
+## Forms
 
-1. **Contact form** — `contact.html` posts to Formspree. Create a free form at
-   [formspree.io](https://formspree.io), then replace `YOUR_FORM_ID` in the
-   `<form action="...">` attribute with your real endpoint.
-2. **Newsletter signup** — every page's footer has a `.newsletter-bar` email
-   form posting to Formspree too (search for `YOUR_NEWSLETTER_FORM_ID`).
-   Create a **second, separate** Formspree form for this so subscriber emails
-   don't land in the same inbox view as contact inquiries. If you later move
-   to a real newsletter tool (Mailchimp, ConvertKit, Beehiiv, etc.), swap the
-   `<form>` action/fields for that provider's embed code — the markup is the
-   same block on every page (search for `newsletter-bar`).
-3. **Photos** — swap the gradient `.img-placeholder` blocks in `index.html` and
-   `about.html` for real photos once available.
-4. **Instagram handle** — currently linked as `@J9INEFit`; update everywhere
-   (search for `instagram.com/J9INEFit`) if that changes.
+- **Contact form** (`contact.html`) posts to Formspree: `formspree.io/f/xykqobzo`.
+- **Newsletter signup** (footer `.newsletter-bar` on every page) posts to a
+  separate Formspree form: `formspree.io/f/xpqgboqa`. Kept separate from the
+  contact form so subscriber emails don't mix with contact inquiries. If you
+  later move to a real newsletter tool (Mailchimp, ConvertKit, Beehiiv, etc.),
+  swap the `<form>` action/fields for that provider's embed code — the markup
+  is the same block on every page (search for `newsletter-bar`).
+- **Instagram handle** — currently linked as `@J9INEFit`; update everywhere
+  (search for `instagram.com/J9INEFit`) if that changes.
 
 ## Local preview
 
