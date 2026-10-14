@@ -1,0 +1,896 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protein Calculator: Know Your Number | J9INE FIT</title>
+<meta name="description" content="Free protein calculator from J9INE FIT. Find your daily protein target based on your weight, activity level, and goal, plus real-food portions to hit it.">
+<link rel="canonical" href="https://www.j9ine.com/protein-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Protein Calculator: Know Your Number | J9INE FIT">
+<meta property="og:description" content="Find your daily protein target in seconds, with real-food portions to hit it.">
+<meta property="og:url" content="https://www.j9ine.com/protein-calculator.html">
+<meta property="og:image" content="https://www.j9ine.com/assets/hero-poster.jpg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="J9INE Protein">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0b0b0b">
+<link rel="apple-touch-icon" id="appleTouchIcon">
+<link rel="icon" id="faviconLink">
+<link rel="manifest" id="manifestLink">
+<style>
+  :root {
+    --bg: #0b0b0b;
+    --bg-raised: #171513;
+    --bg-raised-2: #1f1c19;
+    --crimson: #b5142c;
+    --crimson-deep: #7a0e1f;
+    --crimson-bright: #d81e3f;
+    --cream: #f3ead9;
+    --tan-muted: #c9b79c;
+    --tan-dim: #8f8171;
+    --gold-chalk: #d9b36c;
+    --focus-ring: #e8c98f;
+
+    --font-display: 'Arial Black', 'Arial Bold', Arial, sans-serif;
+    --font-body: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-data: 'Consolas', 'SF Mono', 'Courier New', monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--cream);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-image:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(181,20,44,0.16), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(217,179,106,0.07), transparent 55%);
+  }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: clamp(28px, 6vw, 64px) clamp(18px, 5vw, 32px) 48px;
+  }
+
+  /* ---- Header ---- */
+  .eyebrow {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--crimson-bright);
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 22px;
+    height: 3px;
+    background: var(--crimson-bright);
+    display: inline-block;
+    border-radius: 2px;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(34px, 7vw, 54px);
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin: 0 0 16px;
+    text-wrap: balance;
+    color: var(--cream);
+  }
+  h1 span { color: var(--crimson-bright); }
+
+  .lede {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--tan-muted);
+    max-width: 54ch;
+    margin: 0 0 36px;
+  }
+
+  /* ---- Input card ---- */
+  .card {
+    background: linear-gradient(180deg, var(--bg-raised), var(--bg-raised-2));
+    border: 1px solid rgba(217,179,106,0.15);
+    border-radius: 14px;
+    padding: clamp(20px, 4vw, 32px);
+    box-shadow: 0 30px 60px -30px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.03);
+  }
+
+  .field-label {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--tan-dim);
+    margin: 0 0 14px;
+  }
+
+  .weight-row {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .stepper-btn {
+    flex: 0 0 auto;
+    width: 52px;
+    background: var(--bg-raised-2);
+    border: 1px solid rgba(217,179,106,0.22);
+    color: var(--cream);
+    font-family: var(--font-display);
+    font-size: 22px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 120ms ease, transform 80ms ease, border-color 120ms ease;
+  }
+  .stepper-btn:hover { background: var(--crimson-deep); border-color: var(--crimson); }
+  .stepper-btn:active { transform: scale(0.95); }
+  .stepper-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+  .weight-input-shell {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 10px;
+    background: var(--bg);
+    border: 1px solid rgba(217,179,106,0.22);
+    border-radius: 10px;
+    padding: 6px 12px;
+  }
+
+  #weight {
+    font-family: var(--font-data);
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(32px, 8vw, 44px);
+    font-weight: 700;
+    color: var(--cream);
+    background: transparent;
+    border: none;
+    width: 5ch;
+    text-align: center;
+  }
+  #weight:focus-visible { outline: none; }
+  .weight-input-shell:focus-within { border-color: var(--gold-chalk); }
+  #weight::-webkit-outer-spin-button,
+  #weight::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  #weight { -moz-appearance: textfield; }
+
+  .unit {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--tan-dim);
+  }
+
+  .goal-note {
+    margin: 16px 0 0;
+    font-size: 13px;
+    color: var(--tan-dim);
+    line-height: 1.5;
+  }
+
+  /* ---- Readout ---- */
+  .readout {
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 1px dashed rgba(217,179,106,0.25);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .readout-label {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--crimson-bright);
+    margin: 0;
+  }
+
+  .readout-number {
+    font-family: var(--font-display);
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(52px, 13vw, 88px);
+    line-height: 1;
+    color: var(--cream);
+    margin: 4px 0 2px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .readout-number small {
+    font-family: var(--font-body);
+    font-size: clamp(16px, 3vw, 20px);
+    font-weight: 700;
+    color: var(--tan-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .readout-floor {
+    font-size: 14px;
+    color: var(--tan-muted);
+  }
+  .readout-floor b { color: var(--gold-chalk); font-variant-numeric: tabular-nums; }
+
+  /* ---- Meal chips ---- */
+  .meals {
+    margin-top: 26px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .meal-chip {
+    background: var(--bg);
+    border: 1px solid rgba(217,179,106,0.18);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .meal-chip .k {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--tan-dim);
+    margin: 0 0 6px;
+  }
+  .meal-chip .v {
+    font-family: var(--font-data);
+    font-variant-numeric: tabular-nums;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--gold-chalk);
+  }
+  .meal-chip .v span {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--tan-muted);
+  }
+
+  /* ---- Food reference ---- */
+  .section-heading {
+    margin: 44px 0 6px;
+    font-family: var(--font-display);
+    font-size: clamp(20px, 4vw, 26px);
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: var(--cream);
+  }
+  .section-sub {
+    margin: 0 0 18px;
+    font-size: 14px;
+    color: var(--tan-muted);
+    max-width: 56ch;
+    line-height: 1.6;
+  }
+
+  .food-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+  }
+  .food-card {
+    background: var(--bg-raised);
+    border: 1px solid rgba(217,179,106,0.12);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .food-card .name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--cream);
+    margin: 0 0 4px;
+  }
+  .food-card .amt {
+    font-size: 12px;
+    color: var(--tan-dim);
+    margin: 0 0 8px;
+  }
+  .food-card .grams {
+    font-family: var(--font-data);
+    font-variant-numeric: tabular-nums;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--crimson-bright);
+  }
+  .food-card .serv {
+    margin: 8px 0 0;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(217,179,106,0.18);
+    font-size: 12px;
+    color: var(--tan-muted);
+  }
+  .food-card[hidden] { display: none; }
+
+  .diet-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 16px;
+  }
+  .diet-pill {
+    background: var(--bg-raised);
+    border: 1px solid rgba(217,179,106,0.22);
+    color: var(--tan-muted);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: border-color 120ms ease, background 120ms ease, color 120ms ease;
+  }
+  .diet-pill:hover { border-color: rgba(217,179,106,0.45); }
+  .diet-pill:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  .diet-pill.is-active {
+    background: var(--crimson);
+    border-color: var(--crimson);
+    color: var(--cream);
+  }
+
+  /* ---- CTA band ---- */
+  .cta-band {
+    margin-top: 46px;
+    background: linear-gradient(135deg, var(--crimson-deep), var(--crimson));
+    border-radius: 14px;
+    padding: clamp(22px, 5vw, 32px);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+  }
+  .cta-band p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--cream);
+    max-width: 40ch;
+  }
+  .cta-btn {
+    flex: 0 0 auto;
+    display: inline-block;
+    background: var(--cream);
+    color: var(--crimson-deep);
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    padding: 13px 24px;
+    border-radius: 8px;
+    white-space: nowrap;
+    transition: transform 100ms ease, box-shadow 100ms ease;
+  }
+  .cta-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px -8px rgba(0,0,0,0.5); }
+  .cta-btn:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
+
+  .disclaimer {
+    margin-top: 28px;
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: var(--tan-dim);
+  }
+
+  footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(217,179,106,0.12);
+    font-size: 12px;
+    color: var(--tan-dim);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  footer .ps { font-style: italic; color: var(--tan-muted); }
+
+  @media (max-width: 420px) {
+    .meals { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+
+  .install-hint {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-raised);
+    border: 1px solid rgba(217,179,106,0.18);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin: 0 0 28px;
+    font-size: 13px;
+    color: var(--tan-muted);
+    line-height: 1.5;
+  }
+  .install-hint b { color: var(--gold-chalk); }
+  .install-hint button {
+    margin-left: auto;
+    flex: 0 0 auto;
+    background: transparent;
+    border: none;
+    color: var(--tan-dim);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 6px;
+  }
+  .install-hint button:focus-visible { outline: 2px solid var(--focus-ring); border-radius: 4px; }
+
+  .choice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 0 0 24px;
+  }
+  .choice-card {
+    background: var(--bg);
+    border: 1px solid rgba(217,179,106,0.22);
+    border-radius: 10px;
+    padding: 12px 14px;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+    transition: border-color 120ms ease, background 120ms ease;
+  }
+  .choice-card:hover { border-color: rgba(217,179,106,0.45); }
+  .choice-card:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  .choice-card .t {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--cream);
+    margin: 0 0 3px;
+  }
+  .choice-card .d {
+    font-size: 11.5px;
+    color: var(--tan-dim);
+    line-height: 1.35;
+    margin: 0;
+  }
+  .choice-card.is-selected {
+    border-color: var(--crimson-bright);
+    background: linear-gradient(180deg, rgba(181,20,44,0.18), rgba(181,20,44,0.05));
+  }
+  .choice-card.is-selected .t { color: var(--gold-chalk); }
+
+  #goalGrid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+
+  .back-link {
+    display: inline-block;
+    margin: 0 0 28px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--tan-muted);
+    text-decoration: none;
+  }
+  .back-link:hover { color: var(--cream); }
+  .back-link:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; border-radius: 4px; }
+  footer a { color: var(--tan-muted); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <a class="back-link" href="index.html">&larr; Back to j9ine.com</a>
+
+  <p class="eyebrow">J9INE FIT &middot; Protein Calculator</p>
+  <h1>Know Your <span>Number</span></h1>
+  <p class="lede">Estimate how much protein you actually need each day based on your current weight, activity level, and goal &mdash; a clear starting point whether you're losing weight or building muscle.</p>
+
+  <div class="install-hint" id="installHint">
+    <span>📲 <b>Save this like an app:</b> iPhone &rarr; Share icon &rarr; "Add to Home Screen." Android &rarr; &#8942; menu &rarr; "Add to Home Screen."</span>
+    <button type="button" id="dismissHint" aria-label="Dismiss">&times;</button>
+  </div>
+
+  <div class="card">
+    <p class="field-label">Your Goal</p>
+    <div class="choice-grid" id="goalGrid" role="radiogroup" aria-label="Goal">
+      <button type="button" class="choice-card is-selected" data-goal="lose" role="radio" aria-checked="true">
+        <p class="t">Lose Weight</p>
+        <p class="d">Preserve muscle while the scale moves down</p>
+      </button>
+      <button type="button" class="choice-card" data-goal="build" role="radio" aria-checked="false">
+        <p class="t">Build Muscle</p>
+        <p class="d">Give your training something to build with</p>
+      </button>
+      <button type="button" class="choice-card" data-goal="maintain" role="radio" aria-checked="false">
+        <p class="t">Maintain Weight</p>
+        <p class="d">Hold steady where you already are</p>
+      </button>
+    </div>
+
+    <p class="field-label">Activity Level</p>
+    <div class="choice-grid" id="activityGrid" role="radiogroup" aria-label="Activity level">
+      <button type="button" class="choice-card" data-activity="sedentary" role="radio" aria-checked="false">
+        <p class="t">Sedentary</p>
+        <p class="d">Little to no structured exercise</p>
+      </button>
+      <button type="button" class="choice-card" data-activity="light" role="radio" aria-checked="false">
+        <p class="t">Lightly Active</p>
+        <p class="d">Training 1&ndash;3 days a week</p>
+      </button>
+      <button type="button" class="choice-card is-selected" data-activity="moderate" role="radio" aria-checked="true">
+        <p class="t">Moderately Active</p>
+        <p class="d">Training 3&ndash;5 days a week</p>
+      </button>
+      <button type="button" class="choice-card" data-activity="very" role="radio" aria-checked="false">
+        <p class="t">Very Active</p>
+        <p class="d">Training 6&ndash;7 days a week</p>
+      </button>
+    </div>
+
+    <p class="field-label">Your Weight</p>
+    <div class="weight-row">
+      <button class="stepper-btn" id="minus" type="button" aria-label="Decrease weight by 5 pounds">&minus;</button>
+      <div class="weight-input-shell">
+        <input type="number" id="weight" value="150" min="80" max="350" step="1" inputmode="numeric" aria-label="Weight in pounds">
+        <span class="unit">lbs</span>
+      </div>
+      <button class="stepper-btn" id="plus" type="button" aria-label="Increase weight by 5 pounds">&plus;</button>
+    </div>
+    <p class="goal-note">Losing weight? Enter your <em>current</em> weight, not your goal &mdash; recalculate as you go so protein keeps pace with where you actually are.</p>
+
+    <div class="readout">
+      <p class="readout-label">Your Daily Target</p>
+      <p class="readout-number"><span id="target">150</span><small>g protein / day</small></p>
+      <p class="readout-floor">Working range: <b id="rangeLow">135</b>&ndash;<b id="rangeHigh">150</b>g/day</p>
+    </div>
+
+    <div class="meals">
+      <div class="meal-chip">
+        <p class="k">Eating 3x a day</p>
+        <p class="v"><span id="perMeal3">50</span><span> g / meal</span></p>
+      </div>
+      <div class="meal-chip">
+        <p class="k">Eating 4x a day</p>
+        <p class="v"><span id="perMeal4">38</span><span> g / meal</span></p>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-heading">Real Food That Gets You There</h2>
+  <p class="section-sub">You don't need a powder for every gram. Filter by how you eat &mdash; every card updates with your number.</p>
+
+  <div class="diet-filter" id="dietFilter" role="tablist" aria-label="Filter food by diet">
+    <button type="button" class="diet-pill is-active" data-diet="all" role="tab" aria-selected="true">All</button>
+    <button type="button" class="diet-pill" data-diet="vegetarian" role="tab" aria-selected="false">Vegetarian</button>
+    <button type="button" class="diet-pill" data-diet="pescatarian" role="tab" aria-selected="false">Pescatarian</button>
+  </div>
+
+  <div class="food-grid" id="foodGrid">
+    <div class="food-card" data-protein="35" data-serving="4" data-unit="oz" data-diets="all">
+      <p class="name">Chicken breast</p>
+      <p class="amt">4 oz, cooked = 35g</p>
+      <p class="grams"><b class="servCount">6</b></p>
+      <p class="serv">to hit one meal</p>
+    </div>
+    <div class="food-card" data-protein="28" data-serving="4" data-unit="oz" data-diets="all">
+      <p class="name">Ground turkey</p>
+      <p class="amt">4 oz, cooked = 28g</p>
+      <p class="grams"><b class="servCount">6 oz</b></p>
+      <p class="serv">to hit one meal</p>
+    </div>
+    <div class="food-card" data-protein="30" data-serving="4" data-unit="oz" data-diets="all pescatarian">
+      <p class="name">Salmon</p>
+      <p class="amt">4 oz, cooked = 30g</p>
+      <p class="grams"><b class="servCount">7 oz</b></p>
+      <p class="serv">to hit one meal</p>
+    </div>
+    <div class="food-card" data-protein="24" data-serving="4" data-unit="oz" data-diets="all pescatarian">
+      <p class="name">Shrimp</p>
+      <p class="amt">4 oz, cooked = 24g</p>
+      <p class="grams"><b class="servCount">8 oz</b></p>
+      <p class="serv">to hit one meal</p>
+    </div>
+    <div class="food-card" data-protein="20" data-serving="1" data-unit="cup" data-diets="all pescatarian vegetarian">
+      <p class="name">Greek yogurt</p>
+      <p class="amt">1 cup, plain = 20g</p>
+      <p class="grams"><b class="servCount">2.5 cups</b></p>
+      <p class="serv">to hit one meal</p>
+    </div>
+    <div class="food-card" data-protein="12" data-serving="2" data-unit="egg" data-diets="all pescatarian vegetarian">
+      <p class="name">Eggs</p>
+      <p class="amt">2 large = 12g</p>
+      <p class="grams"><b class="servCount">8 eggs</b></p>
+      <p class="serv">to hit one meal</p>
+    </div>
+    <div class="food-card" data-protein="24" data-serving="1" data-unit="cup" data-diets="all pescatarian vegetarian">
+      <p class="name">Cottage cheese</p>
+      <p class="amt">1 cup = 24g</p>
+      <p class="grams"><b class="servCount">2 cups</b></p>
+      <p class="serv">to hit one meal</p>
+    </div>
+    <div class="food-card" data-protein="25" data-serving="1" data-unit="scoop" data-diets="all pescatarian vegetarian">
+      <p class="name">Protein shake</p>
+      <p class="amt">1 scoop = 25g</p>
+      <p class="grams"><b class="servCount">2 scoops</b></p>
+      <p class="serv">to hit one meal</p>
+    </div>
+    <div class="food-card" data-protein="20" data-serving="1" data-unit="cup" data-diets="all pescatarian vegetarian">
+      <p class="name">Tofu</p>
+      <p class="amt">1 cup, firm, cubed = 20g</p>
+      <p class="grams"><b class="servCount">2.5 cups</b></p>
+      <p class="serv">to hit one meal</p>
+    </div>
+    <div class="food-card" data-protein="18" data-serving="1" data-unit="cup" data-diets="all pescatarian vegetarian">
+      <p class="name">Lentils</p>
+      <p class="amt">1 cup, cooked = 18g</p>
+      <p class="grams"><b class="servCount">2.5 cups</b></p>
+      <p class="serv">to hit one meal</p>
+    </div>
+  </div>
+
+  <div class="cta-band">
+    <p>Know your number. Want a plan &mdash; and a coach &mdash; built around actually hitting it?</p>
+    <a class="cta-btn" href="https://calendly.com/janean-benton-j9ine">Book a Session &rarr;</a>
+  </div>
+
+  <p class="disclaimer">This calculator gives a general estimate for educational purposes only and isn't personalized medical or nutritional advice. Talk with your doctor or a registered dietitian before making major changes to your diet, especially if you're pregnant, nursing, or managing a health condition.</p>
+
+  <footer>
+    <span>J9INE FIT &middot; Charlotte, NC</span>
+    <span><a href="wellness.html">More wellness tips</a></span>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    // Build brand icons on a canvas (no external image requests) and wire up
+    // apple-touch-icon / favicon / a data-URI manifest so the page can be
+    // saved to a phone's home screen and launch full-screen like an app.
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    }
+
+    function makeIcon(size) {
+      var canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      var ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = '#0b0b0b';
+      roundRect(ctx, 0, 0, size, size, size * 0.22);
+      ctx.fill();
+
+      ctx.strokeStyle = '#b5142c';
+      ctx.lineWidth = size * 0.09;
+      ctx.beginPath();
+      ctx.arc(size * 0.5, size * 0.56, size * 0.33, Math.PI * 0.15, Math.PI * 1.65);
+      ctx.stroke();
+
+      ctx.fillStyle = '#f3ead9';
+      ctx.font = '900 ' + Math.round(size * 0.32) + 'px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('J9', size * 0.5, size * 0.53);
+
+      return canvas.toDataURL('image/png');
+    }
+
+    try {
+      var icon180 = makeIcon(180);
+      var icon192 = makeIcon(192);
+      var icon512 = makeIcon(512);
+
+      document.getElementById('appleTouchIcon').setAttribute('href', icon180);
+      document.getElementById('faviconLink').setAttribute('href', icon180);
+      document.getElementById('faviconLink').setAttribute('type', 'image/png');
+
+      var manifest = {
+        name: 'J9INE FIT — Know Your Number',
+        short_name: 'J9INE Protein',
+        start_url: '.',
+        display: 'standalone',
+        background_color: '#0b0b0b',
+        theme_color: '#0b0b0b',
+        icons: [
+          { src: icon192, sizes: '192x192', type: 'image/png' },
+          { src: icon512, sizes: '512x512', type: 'image/png' }
+        ]
+      };
+      document.getElementById('manifestLink').setAttribute(
+        'href',
+        'data:application/manifest+json,' + encodeURIComponent(JSON.stringify(manifest))
+      );
+    } catch (e) {
+      // Icon/manifest generation is a nice-to-have; the calculator still works without it.
+    }
+
+    var hint = document.getElementById('installHint');
+    var dismiss = document.getElementById('dismissHint');
+    if (window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches) {
+      hint.style.display = 'none';
+    }
+    dismiss.addEventListener('click', function () {
+      hint.style.display = 'none';
+    });
+  })();
+
+  (function () {
+    var input = document.getElementById('weight');
+    var minus = document.getElementById('minus');
+    var plus = document.getElementById('plus');
+    var target = document.getElementById('target');
+    var rangeLow = document.getElementById('rangeLow');
+    var rangeHigh = document.getElementById('rangeHigh');
+    var perMeal3 = document.getElementById('perMeal3');
+    var perMeal4 = document.getElementById('perMeal4');
+    var goalGrid = document.getElementById('goalGrid');
+    var activityGrid = document.getElementById('activityGrid');
+    var foodCards = document.querySelectorAll('#foodGrid .food-card');
+    var dietFilter = document.getElementById('dietFilter');
+    var activeDiet = 'all';
+
+    dietFilter.addEventListener('click', function (e) {
+      var pill = e.target.closest('.diet-pill');
+      if (!pill) return;
+
+      var pills = dietFilter.querySelectorAll('.diet-pill');
+      for (var p = 0; p < pills.length; p++) {
+        pills[p].classList.remove('is-active');
+        pills[p].setAttribute('aria-selected', 'false');
+      }
+      pill.classList.add('is-active');
+      pill.setAttribute('aria-selected', 'true');
+
+      activeDiet = pill.getAttribute('data-diet');
+      for (var i = 0; i < foodCards.length; i++) {
+        var diets = (foodCards[i].getAttribute('data-diets') || '').split(' ');
+        if (diets.indexOf(activeDiet) !== -1) {
+          foodCards[i].removeAttribute('hidden');
+        } else {
+          foodCards[i].setAttribute('hidden', '');
+        }
+      }
+    });
+
+    // Grams of protein per lb of bodyweight, by goal x activity level.
+    // Weight-loss rows sit higher than build-muscle rows on purpose: in a
+    // calorie deficit, protein needs go UP (not down) to protect muscle.
+    var MULT = {
+      lose:     { sedentary: 0.8, light: 0.9, moderate: 1.0, very: 1.1 },
+      build:    { sedentary: 0.7, light: 0.8, moderate: 0.9, very: 1.0 },
+      maintain: { sedentary: 0.6, light: 0.7, moderate: 0.8, very: 0.9 }
+    };
+
+    var state = { goal: 'lose', activity: 'moderate' };
+
+    function selectCard(grid, card, key, value) {
+      var cards = grid.querySelectorAll('.choice-card');
+      for (var i = 0; i < cards.length; i++) {
+        cards[i].classList.remove('is-selected');
+        cards[i].setAttribute('aria-checked', 'false');
+      }
+      card.classList.add('is-selected');
+      card.setAttribute('aria-checked', 'true');
+      state[key] = value;
+      render();
+    }
+
+    goalGrid.addEventListener('click', function (e) {
+      var card = e.target.closest('.choice-card');
+      if (!card) return;
+      selectCard(goalGrid, card, 'goal', card.getAttribute('data-goal'));
+    });
+    activityGrid.addEventListener('click', function (e) {
+      var card = e.target.closest('.choice-card');
+      if (!card) return;
+      selectCard(activityGrid, card, 'activity', card.getAttribute('data-activity'));
+    });
+
+    function clamp(v) {
+      v = Math.round(v);
+      if (v < 80) v = 80;
+      if (v > 350) v = 350;
+      return v;
+    }
+
+    var UNIT_LABELS = { oz: 'oz', cup: 'cup', egg: 'egg', scoop: 'scoop' };
+
+    // Convert a target gram amount into a real-world quantity (oz, cups,
+    // egg count, scoops) instead of an abstract "servings" multiplier —
+    // eggs round to whole eggs, everything else to the nearest half unit.
+    function formatAmount(grams, gramsPerServing, servingSize, unit) {
+      var raw = (grams / gramsPerServing) * servingSize;
+      var isWhole = unit === 'egg';
+      var rounded = isWhole ? Math.max(1, Math.round(raw)) : Math.max(0.5, Math.round(raw * 2) / 2);
+      var numStr = (rounded % 1 === 0) ? String(rounded) : rounded.toFixed(1);
+      var label = UNIT_LABELS[unit] || unit;
+      if (rounded !== 1 && label !== 'oz') label += 's';
+      return numStr + ' ' + label;
+    }
+
+    // Recompute the numbers from whatever is currently in the field.
+    // Never rewrites input.value here — that would stomp on a client mid-type
+    // (e.g. clamping "1" to "80" the instant they start typing "150").
+    function render() {
+      var raw = parseFloat(input.value);
+      var w = isNaN(raw) || raw <= 0 ? 150 : raw;
+
+      var mult = MULT[state.goal][state.activity];
+      var targetVal = Math.round(w * mult);
+      var lowVal = Math.round(w * (mult - 0.1));
+
+      target.textContent = targetVal;
+      rangeLow.textContent = lowVal;
+      rangeHigh.textContent = targetVal;
+      var perMealVal = targetVal / 3;
+      perMeal3.textContent = Math.round(perMealVal);
+      perMeal4.textContent = Math.round(targetVal / 4);
+
+      for (var i = 0; i < foodCards.length; i++) {
+        var card = foodCards[i];
+        var gramsPerServing = parseFloat(card.getAttribute('data-protein'));
+        var servingSize = parseFloat(card.getAttribute('data-serving'));
+        var unit = card.getAttribute('data-unit');
+        var servEl = card.querySelector('.servCount');
+        if (servEl && gramsPerServing && servingSize) {
+          servEl.textContent = formatAmount(perMealVal, gramsPerServing, servingSize, unit);
+        }
+      }
+    }
+
+    // Only clamp/round the visible field once they're done editing it,
+    // so a fresh value can be typed in cleanly.
+    function commit() {
+      input.value = clamp(parseFloat(input.value) || 150);
+      render();
+    }
+
+    minus.addEventListener('click', function () {
+      input.value = clamp((parseFloat(input.value) || 150) - 5);
+      render();
+    });
+    plus.addEventListener('click', function () {
+      input.value = clamp((parseFloat(input.value) || 150) + 5);
+      render();
+    });
+    input.addEventListener('input', render);
+    input.addEventListener('blur', commit);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        input.blur();
+      }
+    });
+
+    render();
+  })();
+</script>
+</body>
+</html>
